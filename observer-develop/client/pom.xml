@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>client</artifactId>
+    <version>${revision}</version>
+
+    <parent>
+        <artifactId>observer</artifactId>
+        <groupId>org.nethergames.observer</groupId>
+        <version>${revision}</version>
+    </parent>
+
+    <properties>
+        <micro-common.version>1.0.8</micro-common.version>
+        <okhttp3.version>4.12.0</okhttp3.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.nethergames.observer</groupId>
+            <artifactId>data</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.nethergames.micro-common</groupId>
+            <artifactId>micro-common</artifactId>
+            <version>${micro-common.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp3.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>Observer-Client</finalName>
+    </build>
+
+</project>
