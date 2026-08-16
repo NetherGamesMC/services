@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="INFO" packages="pl.tkowalcz.tjahzi.log4j2">
+    <appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%-5level- %d{yyyy-MM-dd HH:mm:ss} [%logger{36}]: %msg%n"/>
+        </Console>
+    </appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</configuration>

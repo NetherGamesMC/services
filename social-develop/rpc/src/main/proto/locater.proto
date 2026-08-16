@@ -1,0 +1,118 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package org.nethergames.social.rpc;
+
+option go_package = "github.com/NetherGamesMC/SocialService/go-grpc;social";
+
+
+option php_metadata_namespace = "nethergames\\social\\rpc\\metadata";
+option php_namespace = "nethergames\\social\\rpc";
+
+// Begin Data
+
+enum PlayerStatus {
+  Online = 0;
+  Disconnected = 1;
+}
+
+message PlayerData {
+  string source_id = 1;
+  string player_xuid = 2;
+  string player_name = 3;
+  string server_id = 4;
+  string address = 5;
+  string last_address = 6;
+  string connection_id = 7;
+}
+
+// Begin Request
+
+message AddPlayer {
+  string source_uid = 1;
+  repeated PlayerData data = 2;
+}
+
+message Signup {
+  string source_id = 2; // proxy id
+}
+
+message HeartbeatMessage {
+  string source_uid = 1;
+}
+
+message GetPlayerStatus {
+  repeated string player_info = 1;
+}
+
+message UpdatePlayerStatus {
+  string sourceUid = 1;
+  PlayerStatus status = 2;
+  string player_xuid = 3;
+  string serverId = 4;
+}
+
+message Shutdown {
+  string source_uid = 1;
+}
+
+message RemovePlayer {
+  string source_uid = 1;
+  repeated string player_xuid = 2;
+}
+
+// Begin Responses
+
+message ActionResponse {
+  bool valid_source_uid = 1;
+  bool action_complete = 2;
+  string connection_id = 3;
+}
+
+message PlayerStatusResponse {
+  repeated PlayerStatusEntry responses = 2;
+}
+
+message PlayerStatusEntry {
+  bool online = 1;
+  string search_entry = 2;
+  PlayerData data = 3;
+}
+
+message GetAllResponse {
+  repeated PlayerData data = 1;
+}
+
+message GetStateResponse {
+  int32 player_count = 1;
+}
+
+message SignupResponse {
+  string source_uid = 1;
+}
+
+message PlayerEvent {
+  string player_xuid = 1;
+  string player_name = 2;
+  PlayerStatus status = 3;
+}
+
+// Begin Service
+
+message Empty {}
+
+service PlayerLocality {
+  rpc addPlayer(AddPlayer) returns (ActionResponse);
+  rpc removePlayer(RemovePlayer) returns (ActionResponse);
+  rpc updatePlayer(UpdatePlayerStatus) returns (ActionResponse);
+  rpc getPlayer(GetPlayerStatus) returns (PlayerStatusResponse);
+  rpc getPlayerByXuid(GetPlayerStatus) returns (PlayerStatusResponse);
+  rpc getPlayerByName(GetPlayerStatus) returns (PlayerStatusResponse);
+  rpc signup(Signup) returns (SignupResponse);
+  rpc heartbeat(HeartbeatMessage) returns (ActionResponse);
+  rpc shutdown(Shutdown) returns (ActionResponse);
+  rpc getAll(Empty) returns (GetAllResponse);
+  rpc getState(Empty) returns (stream GetStateResponse);
+
+  // Leave/join events.
+  rpc getPlayerEvents(Empty) returns (stream PlayerEvent);
+}

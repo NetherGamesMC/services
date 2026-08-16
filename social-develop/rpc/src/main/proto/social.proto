@@ -1,0 +1,166 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package org.nethergames.social.rpc;
+
+option go_package = "github.com/NetherGamesMC/SocialService/go-grpc;social";
+
+option php_metadata_namespace = "nethergames\\social\\rpc\\metadata";
+option php_namespace = "nethergames\\social\\rpc";
+
+service SocialService {
+
+  rpc createParty(PartyCreateRequest) returns (PartyActionResponse);
+  rpc disbandParty(PartyDisbandRequest) returns (PartyActionResponse);
+  rpc kickMember(PartyKickRequest) returns (PartyActionResponse);
+  rpc inviteMember(PartyInviteRequest) returns (PartyActionResponse);
+  rpc getPartyMembers(GetPartyMemberRequest) returns (GetPartyMemberResponse);
+  rpc getParty(GetPartyRequest) returns (GetPartyResponse);
+  rpc getPartyInvites(GetPartyInvitesRequest) returns (GetPartyInvitesResponse);
+  rpc declineInvite(PartyInvite) returns (PartyActionResponse);
+  rpc acceptInvite(PartyInvite) returns (PartyActionResponse);
+  rpc getPlayerPartyInvites(GetPlayerPartyInvitesRequest) returns (GetPartyInvitesResponse);
+  rpc updatePartyPlayerStatus(UpdatePlayerPartyStatusRequest) returns (PartyActionResponse);
+  rpc leaveParty(LeavePartyRequest) returns (PartyActionResponse);
+  rpc joinPublicParty(JoinPublicPartyRequest) returns (PartyActionResponse);
+  // Endpoints that are not bound to players - mainly for admin / internal
+  rpc getPlayerParty(GetPlayerPartyRequest) returns (GetPlayerPartyResponse);
+  rpc getPublicParties(ListPublicPartiesRequest) returns (ListPublicPartiesResponse);
+}
+
+enum PartyError {
+  AlreadyExists = 0;
+  PartyFull = 1;
+  NotEnoughPermissions = 2;
+  PartyNotFound = 3;
+}
+
+enum PartyRole {
+  Member = 0;
+  Moderator = 1;
+  Leader = 2;
+}
+
+enum PartyInviteStatus {
+  Accepted = 0;
+  Denied = 1;
+}
+
+message ListPublicPartiesResponse {
+  repeated Party parties = 1;
+}
+
+message ListPublicPartiesRequest {
+
+}
+
+message BackendError {
+  string code = 1;
+  string description = 2;
+}
+
+message PartyMember {
+  string xuid = 1;
+  string playerName = 2;
+  PartyRole role = 3;
+}
+
+message Party {
+  repeated PartyMember members = 1;
+  PartySettings settings = 2;
+}
+
+message PartySettings {
+  bool publicParty = 1;
+  bool privateGames = 2;
+  bool playerRandomisation = 3;
+  int32 maxSize = 4;
+}
+
+message PartyInvite {
+  string xuid = 1;
+  string playerName = 2;
+  string partyId = 3;
+}
+
+// END MODELS
+// BEGIN REQUESTS
+
+
+message PartyCreateRequest {
+  string xuid = 1;
+}
+
+message JoinPublicPartyRequest {
+  string sourceXuid = 1;
+  string targetPartyId = 2;
+}
+
+message PartyActionResponse {
+  optional string partyId = 1;
+  optional BackendError error = 2;
+}
+
+message PartyInviteRequest {
+  string sourceXuid = 1;
+  string targetXuid = 2;
+}
+
+message PartyKickRequest {
+  string sourceXuid = 1;
+  string targetXuid = 2;
+}
+
+message LeavePartyRequest {
+  string xuid = 1;
+}
+
+message PartyDisbandRequest {
+  string sourceXuid = 1;
+}
+
+message GetPartyMemberRequest {
+  string sourceXuid = 1;
+}
+
+message GetPartyMemberResponse {
+  repeated PartyMember members = 1;
+}
+
+message GetPartyRequest {
+  string sourceXuid = 1;
+}
+
+message GetPartyResponse {
+  string id = 1;
+  repeated PartyMember member = 2;
+  PartySettings settings = 3;
+}
+
+// Gets all the invites the player sourceXuid received.
+message GetPlayerPartyInvitesRequest {
+  string sourceXuid = 1;
+}
+
+// Gets all the invites of the party to other people (pending invites)
+message GetPartyInvitesRequest {
+  string sourceXuid = 1;
+}
+
+message GetPartyInvitesResponse {
+  repeated PartyInvite invites = 1;
+}
+
+message UpdatePlayerPartyStatusRequest {
+  string sourceXuid = 1;
+  string targetXuid = 2;
+  PartyRole status = 3;
+}
+
+message GetPlayerPartyRequest {
+  string xuid = 1;
+}
+
+message GetPlayerPartyResponse {
+  optional Party party = 1;
+}
+

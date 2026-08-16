@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>client</artifactId>
+    <version>${revision}</version>
+
+    <parent>
+        <artifactId>GSMS</artifactId>
+        <groupId>org.nethergames.gsms</groupId>
+        <version>${revision}</version>
+    </parent>
+
+    <properties>
+        <micro-common.version>1.0.9-SNAPSHOT</micro-common.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.nethergames.micro-common</groupId>
+            <artifactId>micro-common</artifactId>
+            <version>${micro-common.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.nethergames.gsms</groupId>
+            <artifactId>data</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.nethergames.gsms</groupId>
+            <artifactId>rpc</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+</project>

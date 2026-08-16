@@ -1,0 +1,38 @@
+syntax = "proto3";
+option java_multiple_files = true;
+package org.nethergames.gsms.rpc;
+
+option php_metadata_namespace = "nethergames\\gsms\\rpc\\metadata";
+option php_namespace = "nethergames\\gsms\\rpc";
+
+import "servers.proto";
+
+enum QueueingMode {
+  GLOBAL = 0;
+  PREFERRED_TOUCH_ONLY = 1;
+  FORCED_TOUCH_ONLY = 2;
+}
+
+enum ResultCode {
+  FOUND = 0;
+  NONE_FOUND = 1;
+  FULL = 2;
+}
+
+message MatchmakingRequest {
+  string serverType = 1;
+  string gameType = 2;
+  Region currentRegion = 3;
+  bool canJoinFull = 4;
+  bool regionQueueingEnabled = 5;
+  QueueingMode queueingMode = 6;
+}
+
+message MatchmakerResult {
+  ResultCode resultCode = 1;
+  string serverUniqueId = 2;
+}
+
+service MatchmakingService {
+  rpc matchmake(MatchmakingRequest) returns (MatchmakerResult);
+}

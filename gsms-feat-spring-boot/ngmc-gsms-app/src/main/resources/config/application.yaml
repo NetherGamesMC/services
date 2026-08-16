@@ -1,0 +1,81 @@
+spring:
+  main:
+    cloud-platform: kubernetes
+  grpc:
+    server:
+      shutdown-grace-period: 0s
+      port: 5001
+  cloud:
+    kubernetes:
+      discovery:
+        enabled: true
+        namespaces:
+          - game-dev
+          - infra-dev
+    loadbalancer:
+      enabled: false
+  mongodb:
+    uri: ${MONGO_DB_URI:mongodb://MrPotato101:qwerasdf1234@localhost:27017/gsms_datastore}
+    representation:
+      uuid: standard
+  quartz:
+    properties:
+      org.quartz.scheduler:
+        instanceName: ${QUARTZ_SCHEDULER_INSTANCE_NAME:ngmc-gsms}
+        instanceId: ${QUARTZ_SCHEDULER_INSTANCE_ID:AUTO}
+        makeSchedulerThreadDaemon: ${QUARTZ_SCHEDULER_MAKE_THREAD_DAEMON:true}
+      org.quartz.jobStore:
+        class: ${QUARTZ_JOBSTORE_CLASS:com.novemberain.quartz.mongodb.MongoDBJobStore}
+        mongoUri: ${MONGO_DB_URI:mongodb://MrPotato101:qwerasdf1234@localhost:27017/gsms_datastore}
+        dbName: ${QUARTZ_JOBSTORE_DB_NAME:gsms_datastore}
+        collectionPrefix: ${QUARTZ_JOBSTORE_COLL_PREFIX:qrtz_gs}
+        isClustered: ${QUARTZ_JOBSTORE_IS_CLUSTERED:false}
+        misfireThreshold: ${QUARTZ_JOBSTORE_MISFIRE_THRESHOLD:60000}
+      org.quartz.threadPool:
+        class: ${QUARTZ_THREADPOOL_CLASS:org.quartz.simpl.SimpleThreadPool}
+        makeThreadsDaemons: ${QUARTZ_THREADPOOL_DAEMON:true}
+        threadCount: ${QUARTZ_THREADPOOL_COUNT:1}
+        threadPriority: ${QUARTZ_THREADPOOL_PRIORITY:5}
+
+mongock:
+  enabled: true
+  transactional: true
+  migration-scan-package:
+    - org.nethergames.gsms.app.config.dbmigrations
+  transaction-strategy: execution
+
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  enable-native-support: true
+  swagger-ui:
+    disable-swagger-default-url: true
+
+server:
+  port: 5000
+  shutdown: graceful
+  http2:
+    enabled: true
+
+management:
+  server:
+    port: 5002
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  info:
+    git:
+      mode: full
+
+gsms:
+  server-name: ${GSMS_UNIQUE_NAME:gsms-server}
+  kubernetes:
+    game-namespace: ${GSMS_GAME_NAMESPACE:game-dev}
+    infra-namespace: ${GSMS_INFRA_NAMESPACE:infra-dev}
