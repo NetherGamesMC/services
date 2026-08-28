@@ -22,9 +22,9 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <jackson-databind.version>2.17.2</jackson-databind.version>
+        <jackson-databind.version>2.18.9</jackson-databind.version>
         <io.micrometer.version>1.13.2</io.micrometer.version>
-        <kafka.version>3.7.1</kafka.version>
+        <kafka.version>3.9.2</kafka.version>
         <ng-data-utils.version>1.0-SNAPSHOT</ng-data-utils.version>
     </properties>
 
