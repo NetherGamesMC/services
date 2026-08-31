@@ -14,10 +14,10 @@
     </parent>
 
     <properties>
-        <kafka.version>3.7.0</kafka.version>
+        <kafka.version>3.9.2</kafka.version>
         <javalin.version>6.1.2</javalin.version>
         <kubernetes.version>6.10.0</kubernetes.version>
-        <log4j.version>2.23.0</log4j.version>
+        <log4j.version>2.25.5</log4j.version>
         <sentry.version>7.5.0</sentry.version>
         <expiring-map.version>0.5.11</expiring-map.version>
         <influxdb-client.version>6.12.0</influxdb-client.version>
